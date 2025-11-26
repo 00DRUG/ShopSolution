@@ -11,7 +11,7 @@ namespace Shop.Application.Services
     {
         Task<IEnumerable<ProductDto>> GetAllAsync();
         Task<ProductDto?> GetByIdAsync(int id);
-        Task<ProductDto> CreateAsync(CreateProductDto createProductDto);
+        Task<int> CreateAsync(CreateProductDto createProductDto);
         Task UpdateStockAsync(int Id, int newQuantity);
     }
 }
