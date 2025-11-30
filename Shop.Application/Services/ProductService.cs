@@ -1,10 +1,11 @@
 ﻿using Shop.Application.DTOs;
 using Shop.Domain;
 using Shop.Domain.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
+using static Shop.Application.Services.IProductService;
 
 namespace Shop.Application.Services
 {
@@ -59,6 +60,18 @@ namespace Shop.Application.Services
                 throw new Exception($"Product with id {id} not found.");
             product.UpdateStock(newQuantity);
             await _repository.SaveChangesAsync();
+        }
+        public async Task<PagedResult<ProductDto>> GetPagedAsync(int page, int pageSize)
+        {
+            var (items, totalCount) = await _repository.GetPagedAsync(page, pageSize);
+            var dtoItems = items.Select(p => new ProductDto(
+                p.Id,
+                p.Name,
+                p.ImgUrl,
+                p.Price,
+                p.Description,
+                p.StockQuantity));
+            return new PagedResult<ProductDto>(dtoItems, totalCount, page, pageSize);
         }
     }
 }
