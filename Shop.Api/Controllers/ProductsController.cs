@@ -43,7 +43,7 @@ namespace Shop.Api.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                throw NotFound(ex.Message);
+                return NotFound(ex.Message);
             }
             catch (ArgumentException ex)
             {

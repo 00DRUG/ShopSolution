@@ -7,6 +7,7 @@ using Shop.Application.Validators;
 using Shop.Domain.Interfaces;
 using Shop.Infrastructure.Data;
 using Shop.Infrastructure.Repositories;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
