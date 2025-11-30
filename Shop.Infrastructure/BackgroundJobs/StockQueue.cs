@@ -5,14 +5,10 @@ using Shop.Application.DTOs;
 
 namespace Shop.Infrastructure.BackgroundJobs
 {
-    public interface IStockQueue
-    {
-        ValueTask QueueBackgroundWorkItemAsync(StockUpdateMessage workItem);
-        ValueTask<StockUpdateMessage> DequeueAsync(CancellationToken cancellationToken);
-    }
     public class StockQueue : IStockQueue
     {
         private readonly Channel<StockUpdateMessage> _channel;
+        
         public StockQueue()
         {
             var options = new BoundedChannelOptions(100)
@@ -21,6 +17,7 @@ namespace Shop.Infrastructure.BackgroundJobs
             };
             _channel = Channel.CreateBounded<StockUpdateMessage>(options);
         }
+        
         public async ValueTask QueueBackgroundWorkItemAsync(StockUpdateMessage workItem)
         {
             if (workItem == null)
@@ -29,6 +26,7 @@ namespace Shop.Infrastructure.BackgroundJobs
             }
             await _channel.Writer.WriteAsync(workItem);
         }
+        
         public async ValueTask<StockUpdateMessage> DequeueAsync(CancellationToken cancellationToken)
         {
             return await _channel.Reader.ReadAsync(cancellationToken);

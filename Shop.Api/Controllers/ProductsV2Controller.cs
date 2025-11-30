@@ -12,12 +12,15 @@ namespace Shop.Api.Controllers
     public class ProductsV2Controller : ControllerBase
     {
         private readonly IProductService _service;
+        
         private readonly IStockQueue _queue;
+        
         public ProductsV2Controller(IProductService productService, IStockQueue stockQueue)
         {
             _service = productService;
             _queue = stockQueue;
         }
+        
         // GET: api/v2/products?page=1&pageSize=10
         [HttpGet]
         public async Task<ActionResult<PagedResult<ProductDto>>> GetPaged([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
@@ -25,6 +28,7 @@ namespace Shop.Api.Controllers
             var result = await _service.GetPagedAsync(page, pageSize);
             return Ok(result);
         }
+        
         //Async PATCH: api/v2/products/5/stock
         [HttpPatch("{id}/stock")]
         public async Task<IActionResult> UpdateStockAsync(int id, [FromBody] UpdateStockDto dto)

@@ -17,6 +17,7 @@ namespace Shop.Application.Services
         {
             _repository = repository;
         }
+        
         public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
             var products = await _repository.GetAllAsync();
@@ -29,6 +30,7 @@ namespace Shop.Application.Services
                 p.Description,
                 p.StockQuantity));
         }
+        
         public async Task<ProductDto?> GetByIdAsync(int id)
         {
             var product = await _repository.GetByIdAsync(id);

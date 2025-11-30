@@ -19,13 +19,16 @@ builder.Services.AddControllers();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=shop.db";
 builder.Services.AddDbContext<ShopDbContext>(options =>
     options.UseSqlite(connectionString));
+
 //register layers(DI)
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services
+    .AddScoped<IProductRepository, ProductRepository>()
+    .AddScoped<IProductService, ProductService>();
 
 //register validators
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddScoped<IValidator<CreateProductDto>, CreateProductValidator>();
+builder.Services
+    .AddFluentValidationAutoValidation()
+    .AddScoped<IValidator<CreateProductDto>, CreateProductValidator>();
 
 //V2 CONFIG 
 //API Versioning
@@ -41,12 +44,15 @@ builder.Services.AddApiVersioning(options =>
     options.GroupNameFormat = "'v'VVV";
     options.SubstituteApiVersionInUrl = true;
 });
+
 //Background Worker for Stock Updates
-builder.Services.AddSingleton<IStockQueue, StockQueue>();
-builder.Services.AddHostedService<StockUpdateWorker>();
+builder.Services
+    .AddSingleton<IStockQueue, StockQueue>()
+    .AddHostedService<StockUpdateWorker>();
+
 //Swagger configuration
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddEndpointsApiExplorer()
+    .AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
@@ -75,8 +81,9 @@ using (var scope = app.Services.CreateScope()) {
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
+    app
+        .UseSwagger()
+        .UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Shop API V1");
         c.SwaggerEndpoint("/swagger/v2/swagger.json", "Shop API V2");
