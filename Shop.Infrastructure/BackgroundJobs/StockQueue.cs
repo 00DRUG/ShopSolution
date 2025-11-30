@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Shop.Application.DTOs;
 
-namespace Shop.Infrastructure.BackgroudJobs
+namespace Shop.Infrastructure.BackgroundJobs
 {
     public interface IStockQueue
     {

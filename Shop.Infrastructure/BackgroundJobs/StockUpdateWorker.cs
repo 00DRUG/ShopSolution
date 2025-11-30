@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Shop.Application.Services;
 
-namespace Shop.Infrastructure.BackgroudJobs
+namespace Shop.Infrastructure.BackgroundJobs
 {
     public class StockUpdateWorker : BackgroundService
     {
