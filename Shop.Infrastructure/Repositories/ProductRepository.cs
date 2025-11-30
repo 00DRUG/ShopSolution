@@ -29,5 +29,18 @@ namespace Shop.Infrastructure.Repositories
         {
             await _context.Products.AddAsync(product);
         }
+        public async Task<(IEnumerable<Product> Items, int TotalCount)> GetPagedAsync(int page, int pageSize)
+        {
+            var totalCount = await _context.Products.CountAsync();
+
+            var items = await _context.Products
+                .AsNoTracking() 
+                .OrderBy(p => p.Name) 
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (items, totalCount);
+        }
     }
 }

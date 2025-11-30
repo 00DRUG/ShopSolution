@@ -9,5 +9,6 @@ namespace Shop.Domain.Interfaces
         Task<IEnumerable<Product>> GetAllAsync();
         Task AddAsync(Product product);
         Task SaveChangesAsync();
+        Task<(IEnumerable<Product> Items, int TotalCount)> GetPagedAsync(int page, int pageSize);
     }
 }
