@@ -23,4 +23,9 @@
     <ProjectReference Include="..\Shop.Domain\Shop.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ApplicationTest\" />
+    <Folder Include="DomainTest\" />
+  </ItemGroup>
+
 </Project>
