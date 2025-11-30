@@ -8,7 +8,7 @@
         decimal Price,
         string? Description,
         int StockQuantity);
-
+                
     //requirement of creating the product from the task
     public record CreateProductDto(
         string Name,

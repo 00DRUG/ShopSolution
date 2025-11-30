@@ -10,7 +10,6 @@ using Shop.Domain.Interfaces;
 using Shop.Infrastructure.BackgroundJobs;
 using Shop.Infrastructure.Data;
 using Shop.Infrastructure.Repositories;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,7 +35,7 @@ builder.Services.AddApiVersioning(options =>
 {
     options.DefaultApiVersion = new ApiVersion(1, 0); // default to v1.0
     options.AssumeDefaultVersionWhenUnspecified = true;
-    options.ReportApiVersions = true; 
+    options.ReportApiVersions = true;
 })
 .AddMvc()
 .AddApiExplorer(options =>
@@ -72,7 +71,8 @@ builder.Services.AddEndpointsApiExplorer()
 var app = builder.Build();
 
 // ensure db created or connected
-using (var scope = app.Services.CreateScope()) {
+using (var scope = app.Services.CreateScope())
+{
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ShopDbContext>();
     context.Database.EnsureCreated();

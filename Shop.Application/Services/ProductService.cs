@@ -1,10 +1,6 @@
 ﻿using Shop.Application.DTOs;
 using Shop.Domain;
 using Shop.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using static Shop.Application.Services.IProductService;
 
 namespace Shop.Application.Services
@@ -17,7 +13,7 @@ namespace Shop.Application.Services
         {
             _repository = repository;
         }
-        
+
         public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
             var products = await _repository.GetAllAsync();
@@ -30,7 +26,7 @@ namespace Shop.Application.Services
                 p.Description,
                 p.StockQuantity));
         }
-        
+
         public async Task<ProductDto?> GetByIdAsync(int id)
         {
             var product = await _repository.GetByIdAsync(id);

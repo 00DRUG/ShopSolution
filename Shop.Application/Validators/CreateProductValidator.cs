@@ -5,7 +5,7 @@ namespace Shop.Application.Validators
 {
     public class CreateProductValidator : AbstractValidator<CreateProductDto>
     {
-        public CreateProductValidator() 
+        public CreateProductValidator()
         {
             RuleFor(x => x.Name)
                 .NotEmpty()
@@ -15,7 +15,7 @@ namespace Shop.Application.Validators
             RuleFor(x => x.ImgUrl)
                 .NotEmpty()
                 .WithMessage("Image Url is required.")
-                .Must(uri=>Uri.TryCreate(uri, UriKind.Absolute, out _))
+                .Must(uri => Uri.TryCreate(uri, UriKind.Absolute, out _))
                 .WithMessage("Image Url must be a valid URL.");
         }
     }

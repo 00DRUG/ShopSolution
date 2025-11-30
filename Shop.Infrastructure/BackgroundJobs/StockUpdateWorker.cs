@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Shop.Application.Services;
 
@@ -8,12 +8,13 @@ namespace Shop.Infrastructure.BackgroundJobs
     public class StockUpdateWorker : BackgroundService
     {
         private readonly IStockQueue _stockQueue;
-        
+
         private readonly IServiceScopeFactory _serviceScopeFactory; // Factory temp to create scopes
-        
+
         private readonly ILogger<StockUpdateWorker> _logger;
-        
-        public StockUpdateWorker(IStockQueue stockQueue,
+
+        public StockUpdateWorker(
+            IStockQueue stockQueue,
             IServiceScopeFactory serviceScopeFactory,
             ILogger<StockUpdateWorker> logger)
         {
@@ -21,7 +22,7 @@ namespace Shop.Infrastructure.BackgroundJobs
             _serviceScopeFactory = serviceScopeFactory;
             _logger = logger;
         }
-        
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Stock Update Worker running.");

@@ -9,19 +9,19 @@ namespace Shop.Api.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
-        
+
         public ProductsController(IProductService productService)
         {
             _productService = productService;
         }
-        
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetAll()
         {
             var products = await _productService.GetAllAsync();
             return Ok(products);
         }
-        
+
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> GetById(int id)
         {
@@ -30,14 +30,14 @@ namespace Shop.Api.Controllers
                 return NotFound($"Product with Id{id} not found.");
             return Ok(product);
         }
-       
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateProductDto createProductDto)
         {
             var newProductId = await _productService.CreateAsync(createProductDto);
             return CreatedAtAction(nameof(GetById), new { id = newProductId }, null);
         }
-        
+
         [HttpPut("{id}/stock")]
         public async Task<IActionResult> UpdateStock(int id, [FromBody] UpdateStockDto dto)
         {

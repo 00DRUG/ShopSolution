@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace Shop.Domain.Interfaces
+﻿namespace Shop.Domain.Interfaces
 {
     public interface IProductRepository
     {
