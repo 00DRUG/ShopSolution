@@ -2,14 +2,12 @@
 using Shop.Domain;
 using Shop.Domain.Interfaces;
 using Shop.Infrastructure.Data;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 namespace Shop.Infrastructure.Repositories
 {
     public class ProductRepository : IProductRepository
     {
         private readonly ShopDbContext _context;
-        public ProductRepository (ShopDbContext context)
+        public ProductRepository(ShopDbContext context)
         {
             _context = context;
         }
@@ -34,8 +32,8 @@ namespace Shop.Infrastructure.Repositories
             var totalCount = await _context.Products.CountAsync();
 
             var items = await _context.Products
-                .AsNoTracking() 
-                .OrderBy(p => p.Name) 
+                .AsNoTracking()
+                .OrderBy(p => p.Name)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
