@@ -13,8 +13,8 @@
     public record CreateProductDto(
         string Name, // Required
         string ImgUrl, // Required
-        decimal? Price, // Optional(Nullable)
-        string? Description // Optional(Nullable)
+        decimal? Price = null, // Optional(Nullable)
+        string? Description = null // Optional(Nullable)
         );
     public record UpdateStockDto(
         int NewQuantity);
