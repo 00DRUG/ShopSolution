@@ -1,6 +1,40 @@
 @Shop.Api_HostAddress = http://localhost:5034
 
-GET {{Shop.Api_HostAddress}}/weatherforecast/
+### 1. GET All Products (V1)
+GET {{Shop.Api_HostAddress}}/api/products
 Accept: application/json
 
-###
+### 2. CREATE a New Product
+POST {{Shop.Api_HostAddress}}/api/products
+Content-Type: application/json
+
+{
+  "name": "Super Gaming Laptop",
+  "imgUrl": "https://example.com/laptop.jpg"
+}
+
+### 3. GET Single Product by ID
+GET {{Shop.Api_HostAddress}}/api/products/1
+Accept: application/json
+
+### 4. UPDATE Stock (V1 - Synchronous)
+PATCH {{Shop.Api_HostAddress}}/api/products/1/stock
+Content-Type: application/json
+
+{
+  "newQuantity": 50
+}
+
+### 5. GET Paged Products (V2 - Pagination)
+# Should return "Items", "TotalCount", "Page", "PageSize"
+GET {{Shop.Api_HostAddress}}/api/v2/products?page=1&pageSize=5
+Accept: application/json
+
+### 6. UPDATE Stock Async (V2 - Queue)
+# Should return 202
+PATCH {{Shop.Api_HostAddress}}/api/v2/products/1/stock
+Content-Type: application/json
+
+{
+  "newQuantity": 99
+}
