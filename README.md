@@ -171,17 +171,7 @@ ShopSolution/
 │
 └── Shop.Tests/                   # Unit Tests (xUnit, Moq, AutoFixture)
 
-## Technologies Used
-
-- .NET 9, C# 13
-- ASP.NET Core
-- Entity Framework Core (SQLite)
-- FluentValidation
-- Asp.Versioning
-- Swagger (Swashbuckle)
-- xUnit (for testing)
-- In-memory queue for async processing
-- AutoFixture
+```
 
 ---
 
