@@ -44,6 +44,12 @@ namespace Shop.Application.Services
         {
             var product = new Product(dto.Name, dto.ImgUrl);
 
+            //Optional price field for extra info
+            if (dto.Price.HasValue || !string.IsNullOrEmpty(dto.Description))
+            {
+                product.UpdateDetails(dto.Price ?? 0, dto.Description);
+            }
+            
             //save to db
             await _repository.AddAsync(product);
             await _repository.SaveChangesAsync();
