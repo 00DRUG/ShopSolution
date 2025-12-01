@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="ApplicationTest\" />
-    <Folder Include="DomainTest\" />
   </ItemGroup>
 
 </Project>
