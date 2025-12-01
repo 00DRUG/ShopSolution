@@ -11,8 +11,11 @@
                 
     //requirement of creating the product from the task
     public record CreateProductDto(
-        string Name,
-        string ImgUrl);
+        string Name, // Required
+        string ImgUrl, // Required
+        decimal? Price, // Optional(Nullable)
+        string? Description // Optional(Nullable)
+        );
     public record UpdateStockDto(
         int NewQuantity);
 }
