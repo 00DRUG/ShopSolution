@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=shop.db";
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=Data/shop.db";
 builder.Services.AddDbContext<ShopDbContext>(options =>
     options.UseSqlite(connectionString));
 
@@ -70,11 +70,23 @@ builder.Services.AddEndpointsApiExplorer()
 
 var app = builder.Build();
 
-// ensure db created or connected
+// Ensure db created or connected
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ShopDbContext>();
+
+    // Get the path where the app is running
+    var executionPath = AppDomain.CurrentDomain.BaseDirectory;
+
+    //Create Data directory if not exists
+    var dataPath = Path.Combine(executionPath, "Data");
+
+    if (!Directory.Exists(dataPath))
+    {
+        Directory.CreateDirectory(dataPath);
+    }
+
     context.Database.EnsureCreated();
 }
 

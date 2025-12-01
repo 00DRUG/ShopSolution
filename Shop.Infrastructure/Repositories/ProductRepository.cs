@@ -33,7 +33,7 @@ namespace Shop.Infrastructure.Repositories
 
             var items = await _context.Products
                 .AsNoTracking()
-                .OrderBy(p => p.Name)
+                .OrderBy(p => p.Id) // order by id
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();

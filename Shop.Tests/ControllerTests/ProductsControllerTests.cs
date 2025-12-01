@@ -9,11 +9,11 @@ public class ProductsControllerTests
 {
     private readonly Fixture _fixture = new();
     private readonly Mock<IProductService> _serviceMock = new();
-    private readonly ProductsController _controller;
+    private readonly ProductsV1Controller _controller;
 
     public ProductsControllerTests()
     {
-        _controller = new ProductsController(_serviceMock.Object);
+        _controller = new ProductsV1Controller(_serviceMock.Object);
     }
 
     [Fact]

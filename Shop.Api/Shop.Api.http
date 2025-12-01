@@ -1,11 +1,11 @@
 @Shop.Api_HostAddress = http://localhost:5034
 
 ### 1. GET All Products (V1)
-GET {{Shop.Api_HostAddress}}/api/products
+GET {{Shop.Api_HostAddress}}/api/v1/products
 Accept: application/json
 
 ### 2. CREATE a New Product
-POST {{Shop.Api_HostAddress}}/api/products
+POST {{Shop.Api_HostAddress}}/api/v1/products
 Content-Type: application/json
 
 {
@@ -14,11 +14,11 @@ Content-Type: application/json
 }
 
 ### 3. GET Single Product by ID
-GET {{Shop.Api_HostAddress}}/api/products/3
+GET {{Shop.Api_HostAddress}}/api/v1/products/3
 Accept: application/json
 
 ### 4. UPDATE Stock (V1 - Synchronous)
-PATCH {{Shop.Api_HostAddress}}/api/products/1/stock
+PATCH {{Shop.Api_HostAddress}}/api/v1/products/1/stock
 Content-Type: application/json
 
 {
@@ -27,7 +27,7 @@ Content-Type: application/json
 
 ### 5. GET Paged Products (V2 - Pagination)
 # Should return "Items", "TotalCount", "Page", "PageSize"
-GET {{Shop.Api_HostAddress}}/api/v2/products?page=1&pageSize=5
+GET {{Shop.Api_HostAddress}}/api/v2/products?page=1&pageSize=1
 Accept: application/json
 
 ### 6. UPDATE Stock Async (V2 - Queue)

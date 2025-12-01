@@ -1,16 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 using Shop.Application.DTOs;
 using Shop.Application.Services;
 
 namespace Shop.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
-    public class ProductsController : ControllerBase
+    [ApiVersion("1.0")] // V1 version 
+    [Route("api/v{version:apiVersion}/products")]
+    public class ProductsV1Controller : ControllerBase
     {
         private readonly IProductService _productService;
 
-        public ProductsController(IProductService productService)
+        public ProductsV1Controller(IProductService productService)
         {
             _productService = productService;
         }
