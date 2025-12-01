@@ -26,15 +26,10 @@ public class ProductRepositoryTests
 
         var repo = new ProductRepository(context);
 
-        var product = _fixture.Build<Product>()
-            .With(p => p.Name, "TestProduct")
-            .With(p => p.ImgUrl, "http://img.com/test.jpg")
-            .With(p => p.Price, 99.99m)
-            .With(p => p.Description, "Test Description")
-            .With(p => p.StockQuantity, 10)
-            .Without(p => p.Id)
-            .Create();
-        
+        var product = new Product("TestProduct", "http://img.com/test.jpg");
+        product.UpdateDetails(99.99m, "Test Description");
+        product.UpdateStock(10);
+
         // Act
         await repo.AddAsync(product);
         await repo.SaveChangesAsync();
@@ -56,6 +51,7 @@ public class ProductRepositoryTests
         using var connection = new SqliteConnection("DataSource=:memory:");
         connection.Open();
 
+        //db context options creates 3 initial products
         var options = new DbContextOptionsBuilder<ShopDbContext>()
             .UseSqlite(connection)
             .Options;
@@ -65,13 +61,21 @@ public class ProductRepositoryTests
 
         var repo = new ProductRepository(context);
 
-        var products = _fixture.Build<Product>()
-            .With(p => p.ImgUrl, "http://img.com/test.jpg")
-            .With(p => p.Price, 10.0m)
-            .With(p => p.Description, "desc")
-            .With(p => p.StockQuantity, 5)
-            .Without(p => p.Id)
-            .CreateMany(3);
+        var products = new[]
+        {
+            new Product("A", "imgA"),
+            new Product("B", "imgB"),
+            new Product("C", "imgC")
+        };
+
+        products[0].UpdateDetails(1, "descA");
+        products[0].UpdateStock(1);
+
+        products[1].UpdateDetails(2, "descB");
+        products[1].UpdateStock(2);
+
+        products[2].UpdateDetails(3, "descC");
+        products[2].UpdateStock(3);
 
         // Act
         foreach (var product in products)
@@ -82,8 +86,8 @@ public class ProductRepositoryTests
 
         var allProducts = await repo.GetAllAsync();
 
-        // Assert
-        Assert.Equal(3, allProducts.Count());
+        // Assert 
+        Assert.Equal(6, allProducts.Count());
 
         connection.Close();
     }

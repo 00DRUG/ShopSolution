@@ -9,7 +9,7 @@ public class Product
     public string? Description { get; private set; }
 
     public int StockQuantity { get; private set; }
-    // Constructor that enforces name and url
+    // Constructor that enforces name and url only
     public Product (string name, string imgUrl)
     {
         if (string.IsNullOrWhiteSpace(name))

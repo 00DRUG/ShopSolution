@@ -1,7 +1,6 @@
 using AutoFixture;
-using AutoFixture.AutoMoq;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Microsoft.AspNetCore.Mvc;
 using Shop.Api.Controllers;
 using Shop.Application.DTOs;
 using Shop.Application.Services;
@@ -19,32 +18,28 @@ namespace Shop.Tests.ControllerTests
 
         public ProductsV2ControllerTests()
         {
-            _fixture = new Fixture().Customize(new AutoMoqCustomization());
-
-            // Freeze mocks
-            _queueMock = _fixture.Freeze<Mock<IStockQueue>>();
-            _serviceMock = _fixture.Freeze<Mock<IProductService>>();
-
-            _controller = _fixture.Create<ProductsV2Controller>();
+            _queueMock = new Mock<IStockQueue>();
+            _serviceMock = new Mock<IProductService>();
+            _controller = new ProductsV2Controller(_serviceMock.Object, _queueMock.Object);
         }
 
         [Fact]
         public async Task UpdateStockAsync_ShouldReturnAccepted_AndQueueMessage()
         {
-            var id = _fixture.Create<int>();
-            var dto = _fixture.Create<UpdateStockDto>();
+            // Arrange
+            var id = 42;
+            var dto = new UpdateStockDto(99);
 
-
+            // Act
             var result = await _controller.UpdateStockAsync(id, dto);
 
+            // Assert
             Assert.IsType<AcceptedResult>(result);
-
             _queueMock.Verify(x => x.QueueBackgroundWorkItemAsync(
                 It.Is<StockUpdateMessage>(m => m.ProductId == id && m.NewQuantity == dto.NewQuantity)
             ), Times.Once);
-
-            // Verify Service was NOT called (ASYNC)
             _serviceMock.Verify(x => x.UpdateStockAsync(It.IsAny<int>(), It.IsAny<int>()), Times.Never);
+
         }
     }
 }
