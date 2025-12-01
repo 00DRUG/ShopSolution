@@ -7,16 +7,24 @@ namespace Shop.Application.Validators
     {
         public CreateProductValidator()
         {
+            // Handling the Name validation
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .WithMessage("Product name is required.")
                 .MaximumLength(100);
+            
             //Handing the absolte URL validation **
             RuleFor(x => x.ImgUrl)
                 .NotEmpty()
                 .WithMessage("Image Url is required.")
                 .Must(uri => Uri.TryCreate(uri, UriKind.Absolute, out _))
                 .WithMessage("Image Url must be a valid URL.");
+
+            // Handling optional Price validation
+            RuleFor(x => x.Price)
+                .GreaterThanOrEqualTo(0)
+                .When(x => x.Price.HasValue)
+                .WithMessage("Price cannot be negative.");
         }
     }
 }
