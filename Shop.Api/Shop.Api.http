@@ -14,7 +14,7 @@ Content-Type: application/json
 }
 
 ### 3. GET Single Product by ID
-GET {{Shop.Api_HostAddress}}/api/products/1
+GET {{Shop.Api_HostAddress}}/api/products/3
 Accept: application/json
 
 ### 4. UPDATE Stock (V1 - Synchronous)

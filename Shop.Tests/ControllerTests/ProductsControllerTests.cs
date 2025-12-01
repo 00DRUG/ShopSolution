@@ -20,7 +20,7 @@ public class ProductsControllerTests
     public async Task GetAll_ReturnsOkWithProducts()
     {
         // Arrange
-        var products = _fixture.CreateMany<ProductDto>(3);
+        var products = _fixture.CreateMany<ProductDto>(3).ToList();
         _serviceMock.Setup(s => s.GetAllAsync()).ReturnsAsync(products);
 
         // Act

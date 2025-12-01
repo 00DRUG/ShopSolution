@@ -38,7 +38,7 @@ namespace Shop.Api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = newProductId }, null);
         }
 
-        [HttpPut("{id}/stock")]
+        [HttpPatch("{id}/stock")]
         public async Task<IActionResult> UpdateStock(int id, [FromBody] UpdateStockDto dto)
         {
             try
