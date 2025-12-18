@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Common;
 using Shop.Application.DTOs;
@@ -39,6 +40,7 @@ namespace Shop.Api.Controllers
             return Ok(result);
         }
         //Async PATCH: api/v2/products/5/stock
+        [Authorize]
         [HttpPatch("{id}/stock")]
         public async Task<IActionResult> UpdateStockAsync(int id, [FromBody] UpdateStockDto dto)
         {
