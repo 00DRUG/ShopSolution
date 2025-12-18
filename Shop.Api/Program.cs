@@ -5,11 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Shop.Application.DTOs;
 using Shop.Application.Services;
+using Shop.Application.Mappings;
 using Shop.Application.Validators;
 using Shop.Domain.Interfaces;
 using Shop.Infrastructure.BackgroundJobs;
 using Shop.Infrastructure.Data;
 using Shop.Infrastructure.Repositories;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -68,6 +70,11 @@ builder.Services.AddEndpointsApiExplorer()
     });
 });
 
+//AutoMapper configuration
+builder.Services.AddAutoMapper(config =>
+{
+    config.AddMaps(typeof(Shop.Application.Mappings.ProductProfile).Assembly);
+});
 var app = builder.Build();
 
 // Ensure db created or connected

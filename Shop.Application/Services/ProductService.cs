@@ -1,4 +1,5 @@
-﻿using Shop.Application.Common;
+﻿using AutoMapper;
+using Shop.Application.Common;
 using Shop.Application.DTOs;
 using Shop.Domain;
 using Shop.Domain.Interfaces;
@@ -10,28 +11,36 @@ namespace Shop.Application.Services
     {
         private readonly IProductRepository _repository;
 
-        public ProductService(IProductRepository repository)
+        private readonly AutoMapper.IMapper _mapper;
+
+        public ProductService(IProductRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
             var products = await _repository.GetAllAsync();
             //Entity -> Dto
-            return products.Select(p => new ProductDto(
+            return _mapper.Map<IEnumerable<ProductDto>>(products);
+            
+            /*return products.Select(p => new ProductDto(
                 p.Id,
                 p.Name,
                 p.ImgUrl,
                 p.Price,
                 p.Description,
-                p.StockQuantity));
+                p.StockQuantity));*/
         }
 
         public async Task<ProductDto?> GetByIdAsync(int id)
         {
             var product = await _repository.GetByIdAsync(id);
-            if (product == null)
+
+            return _mapper.Map<ProductDto>(product);
+            
+            /*if (product == null)
                 return null;
             return new ProductDto(
                 product.Id,
@@ -39,11 +48,14 @@ namespace Shop.Application.Services
                 product.ImgUrl,
                 product.Price,
                 product.Description,
-                product.StockQuantity);
+                product.StockQuantity);*/
         }
         public async Task<int> CreateAsync(CreateProductDto dto)
         {
-            var product = new Product(dto.Name, dto.ImgUrl);
+            // without AutoMapper
+            //var product = new Product(dto.Name, dto.ImgUrl);
+
+            var product  = _mapper.Map<Product>(dto);
 
             //Optional price field for extra info
             if (dto.Price.HasValue || !string.IsNullOrEmpty(dto.Description))
@@ -69,13 +81,18 @@ namespace Shop.Application.Services
         public async Task<PagedResult<ProductDto>> GetPagedAsync(int page, int pageSize)
         {
             var (items, totalCount) = await _repository.GetPagedAsync(page, pageSize);
-            var dtoItems = items.Select(p => new ProductDto(
+
+            var dtoItems = _mapper.Map<IEnumerable<ProductDto>>(items);
+
+            /*var dtoItems = items.Select(p => new ProductDto(
                 p.Id,
                 p.Name,
                 p.ImgUrl,
                 p.Price,
                 p.Description,
                 p.StockQuantity));
+            */
+
             return new PagedResult<ProductDto>(dtoItems, totalCount, page, pageSize);
         }
         public async Task<CursorResult<ProductDto>> GetCursorPagedAsync(int? lastId, int pageSize)
@@ -89,13 +106,16 @@ namespace Shop.Application.Services
             // Delete the extra item if exists 
             var itemsToReturn = hasNextPage? productsList.Take(pageSize): productsList;
             
-            var dtoItems = products.Select(p => new ProductDto(
+            var dtoItems = _mapper.Map<IEnumerable<ProductDto>>(itemsToReturn);
+            
+            /*var dtoItems = products.Select(p => new ProductDto(
                 p.Id,
                 p.Name,
                 p.ImgUrl,
                 p.Price,
                 p.Description,
                 p.StockQuantity));
+            */
 
             return new CursorResult<ProductDto>
             {
