@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Shop.Domain;
+using Shop.Domain.Entities;
 
 namespace Shop.Infrastructure.Data
 {
-    public class ShopDbContext: DbContext
+    public class ShopDbContext: IdentityDbContext<AppUser>
     {
         public ShopDbContext(DbContextOptions<ShopDbContext> options) : base(options){}
         public DbSet<Product> Products { get; set; }

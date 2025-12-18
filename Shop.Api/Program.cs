@@ -1,16 +1,22 @@
 using Asp.Versioning;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Shop.Application.DTOs;
+using Shop.Application.Interfaces;
 using Shop.Application.Services;
-using Shop.Application.Mappings;
 using Shop.Application.Validators;
+using Shop.Domain.Entities;
 using Shop.Domain.Interfaces;
 using Shop.Infrastructure.BackgroundJobs;
 using Shop.Infrastructure.Data;
 using Shop.Infrastructure.Repositories;
+using Shop.Infrastructure.Services;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -75,6 +81,31 @@ builder.Services.AddAutoMapper(config =>
 {
     config.AddMaps(typeof(Shop.Application.Mappings.ProductProfile).Assembly);
 });
+
+// Authentication
+builder.Services.AddScoped<ITokenService, TokenService>();
+
+//Set identity
+builder.Services.AddIdentityCore<AppUser>(opt => {
+    opt.Password.RequireNonAlphanumeric = false; // easy password for demo
+})
+.AddEntityFrameworkStores<ShopDbContext>()
+.AddSignInManager<SignInManager<AppUser>>();
+
+// JWT Authentication configuration
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(opt =>
+    {
+        opt.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token:Key"]!)),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // Ensure db created or connected
@@ -94,7 +125,7 @@ using (var scope = app.Services.CreateScope())
         Directory.CreateDirectory(dataPath);
     }
 
-    context.Database.EnsureCreated();
+    context.Database.Migrate();
 }
 
 // Configure the HTTP request pipeline.
@@ -110,6 +141,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
