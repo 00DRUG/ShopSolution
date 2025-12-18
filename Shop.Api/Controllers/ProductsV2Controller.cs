@@ -33,7 +33,7 @@ namespace Shop.Api.Controllers
 
         //Get: api/v2/products/by-cursor?lastId=10
         [HttpGet("by-cursor")]
-        public async Task<ActionResult<CursorResult<ProductDto>>> GetCursorPaged([FromQuery] int? lastId, [FromQuery] int pageSize = 10)
+        public async Task<ActionResult<CursorResult<ProductDto>>> GetCursorPaged([FromQuery] int? lastId = null, [FromQuery] int pageSize = 10)
         {
             var result = await _service.GetCursorPagedAsync(lastId, pageSize);
             return Ok(result);

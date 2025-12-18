@@ -81,7 +81,14 @@ namespace Shop.Application.Services
         public async Task<CursorResult<ProductDto>> GetCursorPagedAsync(int? lastId, int pageSize)
         {
             var products = await _repository.GetCursorPagedAsync(lastId, pageSize);
+            var productsList = products.ToList();
 
+            // Determine if there is a next page
+            bool hasNextPage = productsList.Count > pageSize;
+
+            // Delete the extra item if exists 
+            var itemsToReturn = hasNextPage? productsList.Take(pageSize): productsList;
+            
             var dtoItems = products.Select(p => new ProductDto(
                 p.Id,
                 p.Name,
@@ -93,7 +100,7 @@ namespace Shop.Application.Services
             return new CursorResult<ProductDto>
             {
                 Items = dtoItems,
-                NextCursor = dtoItems.LastOrDefault()?.Id,
+                NextCursor = hasNextPage ? dtoItems.LastOrDefault()?.Id : null
             };
         }
     }

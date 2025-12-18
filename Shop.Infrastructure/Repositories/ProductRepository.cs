@@ -46,7 +46,7 @@ namespace Shop.Infrastructure.Repositories
                 .AsNoTracking()
                 .OrderBy(p => p.Id)
                 .Where(p=>!lastId.HasValue || p.Id > lastId.Value)
-                .Take(pageSize)
+                .Take(pageSize+1)
                 .ToListAsync(); 
         }
     }
