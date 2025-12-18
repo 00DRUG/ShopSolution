@@ -1,4 +1,5 @@
-﻿using Shop.Application.DTOs;
+﻿using Shop.Application.Common;
+using Shop.Application.DTOs;
 using Shop.Domain;
 using Shop.Domain.Interfaces;
 using static Shop.Application.Services.IProductService;
@@ -76,6 +77,24 @@ namespace Shop.Application.Services
                 p.Description,
                 p.StockQuantity));
             return new PagedResult<ProductDto>(dtoItems, totalCount, page, pageSize);
+        }
+        public async Task<CursorResult<ProductDto>> GetCursorPagedAsync(int? lastId, int pageSize)
+        {
+            var products = await _repository.GetCursorPagedAsync(lastId, pageSize);
+
+            var dtoItems = products.Select(p => new ProductDto(
+                p.Id,
+                p.Name,
+                p.ImgUrl,
+                p.Price,
+                p.Description,
+                p.StockQuantity));
+
+            return new CursorResult<ProductDto>
+            {
+                Items = dtoItems,
+                NextCursor = dtoItems.LastOrDefault()?.Id,
+            };
         }
     }
 }

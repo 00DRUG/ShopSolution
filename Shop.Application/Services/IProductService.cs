@@ -1,5 +1,5 @@
 ﻿using Shop.Application.DTOs;
-
+using Shop.Application.Common;
 namespace Shop.Application.Services
 {
     public interface IProductService
@@ -15,5 +15,7 @@ namespace Shop.Application.Services
         public record PagedResult<T>(IEnumerable<T> Items, int TotalCount, int Page, int PageSize);
 
         Task<PagedResult<ProductDto>> GetPagedAsync(int page, int pageSize);
+
+        Task<CursorResult<ProductDto>> GetCursorPagedAsync(int? lastId, int pageSize);
     }
 }

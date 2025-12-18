@@ -7,5 +7,6 @@
         Task AddAsync(Product product);
         Task SaveChangesAsync();
         Task<(IEnumerable<Product> Items, int TotalCount)> GetPagedAsync(int page, int pageSize);
+        Task<IEnumerable<Product>> GetCursorPagedAsync(int? lastId, int pageSize);
     }
 }

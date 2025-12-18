@@ -40,5 +40,14 @@ namespace Shop.Infrastructure.Repositories
 
             return (items, totalCount);
         }
+        public async Task<IEnumerable<Product>> GetCursorPagedAsync(int? lastId, int pageSize)
+        {
+            return await _context.Products
+                .AsNoTracking()
+                .OrderBy(p => p.Id)
+                .Where(p=>!lastId.HasValue || p.Id > lastId.Value)
+                .Take(pageSize)
+                .ToListAsync(); 
+        }
     }
 }
