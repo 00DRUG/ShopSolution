@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Shop.Api.Filters;
 using Shop.Application.DTOs;
 using Shop.Application.Interfaces;
 using Shop.Application.Services;
@@ -74,6 +75,16 @@ builder.Services.AddEndpointsApiExplorer()
         Version = "v2",
         Description = "Async API with Background Queue and Pagination."
     });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Enter 'Bearer' [space] and your token.\r\nExample: \"Bearer eyJhbG...\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.OperationFilter<AuthorizeCheckOperationFilter>();
 });
 
 //AutoMapper configuration

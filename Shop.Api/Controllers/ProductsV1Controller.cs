@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.DTOs;
 using Shop.Application.Services;
@@ -33,6 +34,7 @@ namespace Shop.Api.Controllers
             return Ok(product);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateProductDto createProductDto)
         {
@@ -40,6 +42,7 @@ namespace Shop.Api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = newProductId }, null);
         }
 
+        [Authorize]
         [HttpPatch("{id}/stock")]
         public async Task<IActionResult> UpdateStock(int id, [FromBody] UpdateStockDto dto)
         {
